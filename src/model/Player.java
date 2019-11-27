@@ -8,10 +8,12 @@ public abstract class Player {
 		mPawn = Pawns.getValue(pNumber);
 		mNumber = ++pNumber;
 	}
-	
-	abstract void play();
 
 	public int getmNumber() {
 		return mNumber;
+	}
+	
+	public char getPawn() {
+		return mPawn;
 	}
 }

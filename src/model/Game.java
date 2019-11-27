@@ -11,6 +11,7 @@ public abstract class Game {
 	private int mMaxTurn;
 	private int mCurrentPlayer;
 	private boolean mDraw;
+	protected int mMax;
 
 	protected Game(int pNbPlayer, int pSizeX, int pSizeY, boolean[] pMachines) {
 		mBoard = new Board(pSizeX, pSizeY);
@@ -18,10 +19,11 @@ public abstract class Game {
 		mNbPlayer = 2;
 		mOver = false;
 		mMaxTurn = pSizeX*pSizeY;
+		mPlayers = new ArrayList<Player>();
 
 		for(int i = 0; i < mNbPlayer; i++) {
-			if(pMachines[i]) mPlayers.add(new Machine(i-1));
-			else mPlayers.add(new Human(i-1));
+			if(pMachines[i]) mPlayers.add(new Machine(i));
+			else mPlayers.add(new Human(i));
 		}
 	}
 
@@ -29,19 +31,54 @@ public abstract class Game {
 		return mOver;
 	}
 	
-	public void newTurn(Player pCurrent){
-		
+	public boolean isHuman(Player pCurrent){
+		return pCurrent instanceof Human;
 	}
 	
 	public Player calcTurn() {
 		return mPlayers.get((mTurn + 1)% mNbPlayer);
 	}
 
-	public char[][] getBoard() {
-		return mBoard.getmGrid();
+	public Board getBoard() {
+		return mBoard;
 	}
 	
+	public char[][] getGrid() {
+		return mBoard.getGrid();
+	}
 	
+	public int nbValue() {
+		return 0;
+	}
+	
+	public boolean checkAnswer(String pValue, int i) {
+		int value;
+		if(pValue.isEmpty()) return false;
+		try {value = Integer.parseInt(pValue);}
+		catch(Exception e) {return false;}
+		if(value > mBoard.getmSize()[i]|| value <= 0) return false;
+		return true;
+	}
+	
+	public boolean playTurn(Player pCurrent, int[] pValues) {
+		return true;
+	}
+	
+	public void nextTurn() {
+		mTurn++;
+	}
+	
+	public boolean didHeWin(Player pCurrent) {
+		return true;
+	}
+	
+	public void setOver(boolean pValue) {
+		mOver = pValue;
+	}
+	
+	public int getMax() {
+		return mMax;
+	}
 	
 
 
