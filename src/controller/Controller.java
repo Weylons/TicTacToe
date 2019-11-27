@@ -1,5 +1,5 @@
 package controller;
-import ticTacToe.*;
+import model.*;
 import view.*;
 
 public class Controller {

@@ -1,4 +1,4 @@
-package ticTacToe;
+package model;
 
 public enum Pawns {
 	eX('X'),

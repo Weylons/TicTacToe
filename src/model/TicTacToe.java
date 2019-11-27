@@ -1,4 +1,4 @@
-package ticTacToe;
+package model;
 import controller.Controller;
 
 import java.util.ArrayList;

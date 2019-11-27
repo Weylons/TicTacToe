@@ -1,4 +1,4 @@
-package ticTacToe;
+package model;
 
 public abstract class Player {
 	private int mNumber;

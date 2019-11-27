@@ -1,6 +1,6 @@
 package view;
 
-import ticTacToe.Pawns;
+import model.Pawns;
 
 public enum Texts {
 	eTurn("Tour du joueur ");

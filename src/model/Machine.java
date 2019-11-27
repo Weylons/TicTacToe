@@ -1,4 +1,4 @@
-package ticTacToe;
+package model;
 
 public class Machine extends Player{
 	Machine(int pNbPlayer){

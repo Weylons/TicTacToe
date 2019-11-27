@@ -1,4 +1,4 @@
-package ticTacToe;
+package model;
 
 public class Board {
 	private char[][] mGrid;
