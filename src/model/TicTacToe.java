@@ -23,8 +23,6 @@ public class TicTacToe extends Game{
 		char[][] grid = getGrid();
 		if(grid[pValues[0]][pValues[1]] != '\u0000') return false;	
 		else grid[pValues[0]][pValues[1]] = pCurrent.getPawn();
-//		mBoard.setmFrameValue(pValues[0],pValues[1],-1);
-//		mBoard.displayFrameValue();
 		return true;
 	}
 
@@ -46,5 +44,20 @@ public class TicTacToe extends Game{
 			}
 		}
 		return false;
+	}
+	
+	public int[][] initFrameValue() {
+		int[][] frameValue = new int [mBoard.getmSize()[0]][mBoard.getmSize()[1]];
+		for(int i=0; i<mBoard.getmSize()[0]; i++) {
+			for(int j=0; j<mBoard.getmSize()[1]; j++) {
+				if((i == 0 || i == mBoard.getmSize()[0]-1) && (j == 0 || j == mBoard.getmSize()[1]-1)){
+					frameValue[i][j] = 10;
+				}
+				else if(i == (mBoard.getmSize()[0]-1) / 2 && j == (mBoard.getmSize()[1]-1) / 2) {
+					frameValue[i][j] = 5;
+				}
+			}
+		}
+		return frameValue;
 	}
 }

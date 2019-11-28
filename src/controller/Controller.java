@@ -7,7 +7,7 @@ public class Controller {
 	Game mGame;
 	View mView;
 	int[] mValues;
-	int[] mPreviousPlay;
+	int[] mPreviousPlay = new int [] {-1,-1};
 
 	public Controller(){
 		mView = new View();
@@ -16,9 +16,10 @@ public class Controller {
 	public void newGame(GameTypes type) {
 		switch(type) {
 		case eTicTacToe:
-			mGame = new TicTacToe(2, 3, 3, new boolean[] {false, false});
+			mGame = new TicTacToe(2, 3, 3, new boolean[] {false, true});
 		}
 		mValues = new int[mGame.nbValue()];
+		mPreviousPlay = new int[2];
 		gameManager();
 	}
 
@@ -35,7 +36,6 @@ public class Controller {
 		while(!mGame.ismOver()) {
 			Player current = mGame.calcTurn();
 			boolean turnChecked = false;
-			display(current);
 			
 			// Du moment que le tour n'est pas validé
 			while(!turnChecked){
@@ -67,7 +67,7 @@ public class Controller {
 				// Sinon, c'est une machine
 				else {
 					Machine automate = (Machine) current;
-					mValues = automate.autoPlay(mPreviousPlay, mGame.getBoard(), mGame.getMax(), mGame.getBoard().getmSize()[0], mGame.getBoard().getmSize()[1]);	
+					mValues = automate.autoPlay(mGame.getPlayers(), mPreviousPlay, mGame.getBoard(), mGame.getMax(), mGame.getBoard().getmSize()[0], mGame.getBoard().getmSize()[1]);	
 				}
 		
 				// Si la case sélectionnée est déjà utilisée : erreur
@@ -89,7 +89,9 @@ public class Controller {
 					mPreviousPlay = mValues;
 					mGame.nextTurn();
 					turnChecked = true;
+					
 				}
+				display(current);
 			}
 		}
 	}

@@ -22,8 +22,8 @@ public abstract class Game {
 		mPlayers = new ArrayList<Player>();
 
 		for(int i = 0; i < mNbPlayer; i++) {
-			if(pMachines[i]) mPlayers.add(new Machine(i));
-			else mPlayers.add(new Human(i));
+			if(pMachines[i]) mPlayers.add(new Machine(i, initFrameValue()));
+			else mPlayers.add(new Human(i, initFrameValue()));
 		}
 	}
 
@@ -64,7 +64,7 @@ public abstract class Game {
 		return true;
 	}
 	
-	public void nextTurn() {
+	public void nextTurn() {	
 		mTurn++;
 	}
 	
@@ -78,6 +78,14 @@ public abstract class Game {
 	
 	public int getMax() {
 		return mMax;
+	}
+	
+	public int[][] initFrameValue() {
+		return new int[0][0];
+	}
+	
+	public ArrayList<Player> getPlayers() {
+		return mPlayers;
 	}
 	
 	

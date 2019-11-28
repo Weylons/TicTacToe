@@ -1,7 +1,7 @@
 package model;
 
 public class Human extends Player{
-	Human(int pNbPlayer){
-		super(pNbPlayer);
+	Human(int pNbPlayer, int[][] pFrameValue){
+		super(pNbPlayer, pFrameValue);
 	}	
 }
