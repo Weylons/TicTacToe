@@ -23,9 +23,11 @@ public class TicTacToe extends Game{
 		char[][] grid = getGrid();
 		if(grid[pValues[0]][pValues[1]] != '\u0000') return false;	
 		else grid[pValues[0]][pValues[1]] = pCurrent.getPawn();
+//		mBoard.setmFrameValue(pValues[0],pValues[1],-1);
+//		mBoard.displayFrameValue();
 		return true;
 	}
-	
+
 	public boolean didHeWin(Player pCurrent) {
 		char[][] grid = getGrid();
 		for(int i = 0; i<grid.length-mMax; i++) {

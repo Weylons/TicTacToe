@@ -7,6 +7,7 @@ public class Controller {
 	Game mGame;
 	View mView;
 	int[] mValues;
+	int[] mPreviousPlay;
 
 	public Controller(){
 		mView = new View();
@@ -15,7 +16,7 @@ public class Controller {
 	public void newGame(GameTypes type) {
 		switch(type) {
 		case eTicTacToe:
-			mGame = new TicTacToe(2, 3, 3, new boolean[] {false, true});
+			mGame = new TicTacToe(2, 3, 3, new boolean[] {false, false});
 		}
 		mValues = new int[mGame.nbValue()];
 		gameManager();
@@ -41,38 +42,52 @@ public class Controller {
 
 				// Est-ce que le joueur est humain ?
 				if(mGame.isHuman(current)) {
+					
+					
+					
+					
 					for(int i = 0; i < mValues.length; i++) {
 						String enter = mView.getInt(Texts.values()[i].mValue); 	
 						if(!mGame.checkAnswer(enter, i)) {
 							mView.print(Texts.eError.mValue);
 							i--;
 						}
-						else mValues[i] = Integer.parseInt(enter) - 1;
+						else {
+							
+							mValues[i] = Integer.parseInt(enter) - 1;
+						}
 					}	
+					
+					
+					
+					
+					
 				}
-
+				
 				// Sinon, c'est une machine
 				else {
 					Machine automate = (Machine) current;
-					automate.autoPlay(mGame.getBoard(), mGame.getMax(), mGame.getBoard().getmSize()[0], mGame.getBoard().getmSize()[1]);	
+					mValues = automate.autoPlay(mPreviousPlay, mGame.getBoard(), mGame.getMax(), mGame.getBoard().getmSize()[0], mGame.getBoard().getmSize()[1]);	
 				}
-
+		
 				// Si la case sélectionnée est déjà utilisée : erreur
-				if(!mGame.playTurn(current, mValues)) mView.print(Texts.eError.mValue);
+				if(!mGame.playTurn(current, mValues)) {
+					mView.print(Texts.eError.mValue);
+				}
 				
 				// Si le joueur vient de gagner
 				else if(mGame.didHeWin(current)){
 					
 					// Fin de la boucle
 					mGame.setOver(true);
-					
+					turnChecked = true;
 					// Affichage du joueur victorieux
 					mView.print(Texts.eWin.mValue + current.getmNumber());
 				}
 				// Sinon, fin de tour
 				else {
+					mPreviousPlay = mValues;
 					mGame.nextTurn();
-					
 					turnChecked = true;
 				}
 			}

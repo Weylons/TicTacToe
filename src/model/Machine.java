@@ -7,59 +7,79 @@ public class Machine extends Player{
 		super(pNbPlayer);
 	}
 
-	public int[] autoPlay(Board pBoard, int pMax, int pSizeX, int pSizeY) {
+	public int[] autoPlay(int[] pPreviousPlay, Board pBoard, int pMax, int pSizeX, int pSizeY) {
 		char[][] grid = pBoard.getGrid();
 		int[] result = new int[2];
-		for(int i = 0; i<pSizeX-pMax; i++ ) {
-			for(int j = 0; j<pSizeY; j++) {
-				if(grid[i][j] == '\u0000') {
+		recalcValue(pBoard, pPreviousPlay[0], pPreviousPlay[1], pMax, pPreviousPlay[0]-pMax, pPreviousPlay[1]-pMax);
+		for(int i = 0; i<pSizeY; i++ ) {
+			for(int j = 0; j<pSizeX; j++) {
+				if(pBoard.getmFrameValue()[i][j] == -1) {
+				}
+				else {
 					pBoard.setmFrameValue(i, j, testFrame(grid, i, j, pSizeX, pSizeY, pMax));
 				}
-				else pBoard.setmFrameValue(i, j, -1);
-			}
-		}
-		int[][] frameValue = pBoard.getmFrameValue();
-		for(int i=0; i<frameValue.length; i++) {
-			for(int j = 0; j < frameValue.length ; j++) {
-				int current = frameValue[i][j];
 			}
 		}
 		
-		return new int[2];
+		int[][] frameValue = pBoard.getmFrameValue();
+		
+		for(int i=0; i<frameValue.length; i++) {
+			int test = 0;
+			for(int j = 0; j < frameValue.length ; j++) {
+				int current = frameValue[i][j];
+					if(current > test) {
+						test = current;
+						result[0] = i;
+						result[1] = j;
+					}
+			}
+		}
+		
+		return result;
 	}
 
 
-	public int testFrame(char[][] pGrid, int pX, int pY, int pSizeX, int pSizeY, int pMax) {
+	public int testFrame(char[][] pGrid, int pY, int pX, int pSizeX, int pSizeY, int pMax) {
 
-		int horizontal = clockWork(pGrid, pX, pY, pSizeX, pMax*-1,pMax, 0, 0, 1 , 1, 3);
-		int vertical = clockWork(pGrid, pY, pX, pSizeY, pMax*-1, pMax, 0, 0, 1  , 1, 3);
-		System.out.println(horizontal);
-		return 0;
+		int horizontal = clockWork(pGrid, pY, pX, pSizeX, pMax*-1,pMax, 0, 0, 1 , 1, 3);
+		int vertical = clockWork(pGrid, pX, pY, pSizeY, pMax*-1, pMax, 0, 0, 1  , 1, 3);
+		
+		if(horizontal>vertical) return horizontal;
+		return vertical;
 	}
 
-	public int clockWork(char[][] pGrid, int pX, int pY, int pSize, int pCurrent, int pMax, int pAttack, int pDefense,int pCounter, int pSum, int pImportant) {
-		if(pX + pCurrent >= 0 && pX+pCurrent < pSize) {
-			if(pGrid[pX+pCurrent][pY] != '\u0000') {
-				if(pGrid[pX+pCurrent][pY] == getPawn()) {
+	public int clockWork(char[][] pGrid, int pY, int pX, int pSize, int pCurrent, int pMax, int pAttack, int pDefense,int pCounter, int pSum, int pImportant) {
+		if(pY + pCurrent >= 0 && pY+pCurrent < pSize) {
+			if(pGrid[pY+pCurrent][pX] != '\u0000') {
+				if(pGrid[pY+pCurrent][pX] == getPawn()) {
 					pAttack += pSum;
 					if(pAttack == pImportant) {
-						return 15;
+						return 1000;
 					}
 				}
 				else 
 				{
 					pDefense +=pSum;
 					if(pDefense == pImportant) {
-						return 14;
+						return 999;
 					}
 				}
 				if(pCurrent<pMax) {
 					if(pCurrent + 1 == 0) pCurrent++;
-					pAttack = clockWork(pGrid, pX, pY, pSize, pCurrent+1,pMax, pAttack,pDefense, pCounter++,  pSum*2, pImportant*2);
+					if(pCounter > 2) pImportant*=2;
+					pAttack = clockWork(pGrid, pY, pX, pSize, pCurrent+1,pMax, pAttack,pDefense, pCounter++,  pSum*2, pImportant);
 				}
 			}
 		}
-		
-		return 0;
+		if(pAttack > pDefense) return pAttack;
+		return pDefense;
 	}
+	
+	private void recalcValue(Board pBoard, int pCurrentX, int pCurrentY, int pMax, int pY, int pX) {
+		int countdown = 1;
+		for(int i = 1; i <= pMax && i > 0; i+=countdown) {
+			
+		}
+	}
+
 }

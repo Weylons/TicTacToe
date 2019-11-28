@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Game {
 	private ArrayList<Player> mPlayers;
-	private Board mBoard;
+	protected Board mBoard;
 	private int mNbPlayer;
 	private int mTurn;
 	private boolean mOver;
@@ -56,7 +56,7 @@ public abstract class Game {
 		if(pValue.isEmpty()) return false;
 		try {value = Integer.parseInt(pValue);}
 		catch(Exception e) {return false;}
-		if(value > mBoard.getmSize()[i]|| value <= 0) return false;
+		if(value > mBoard.getmSize()[1]*mBoard.getmSize()[0]|| value <= 0) return false;
 		return true;
 	}
 	
@@ -80,10 +80,5 @@ public abstract class Game {
 		return mMax;
 	}
 	
-
-
-
-
-
-
+	
 }
