@@ -22,8 +22,8 @@ public abstract class Game {
 		mPlayers = new ArrayList<Player>();
 
 		for(int i = 0; i < mNbPlayer; i++) {
-			if(pMachines[i]) mPlayers.add(new Machine(i, initFrameValue()));
-			else mPlayers.add(new Human(i, initFrameValue()));
+			if(pMachines[i]) mPlayers.add(new Machine(i, initFrameValue(), this));
+			else mPlayers.add(new Human(i, initFrameValue(), this));
 		}
 	}
 
@@ -51,14 +51,7 @@ public abstract class Game {
 		return 0;
 	}
 	
-	public boolean checkAnswer(String pValue, int i) {
-		int value;
-		if(pValue.isEmpty()) return false;
-		try {value = Integer.parseInt(pValue);}
-		catch(Exception e) {return false;}
-		if(value > mBoard.getmSize()[1]*mBoard.getmSize()[0]|| value <= 0) return false;
-		return true;
-	}
+	abstract public boolean checkAnswer(String pValue, int i);
 	
 	public boolean playTurn(Player pCurrent, int[] pValues) {
 		return true;
@@ -80,13 +73,22 @@ public abstract class Game {
 		return mMax;
 	}
 	
-	public int[][] initFrameValue() {
-		return new int[0][0];
-	}
-	
 	public ArrayList<Player> getPlayers() {
 		return mPlayers;
 	}
+	
+	abstract public int[][] initFrameValue();
+	
+	abstract public void setAllFrames(ArrayList<Player > pPlayers, int[] pFrame);
+	
+	
+	abstract public void setSelfFrame(Player pCurrent, int[] pFrame, int pMax);
+	
+	abstract public int returnIndexOfBest(ArrayList<Integer> pValues ) ;
+	
+	abstract public int[] calcFrameValue(int[][] pFrameValue);
+	abstract public int getBest(int[][] pFrameValue);
+	
 	
 	
 }

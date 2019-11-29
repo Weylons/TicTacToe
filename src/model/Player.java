@@ -6,11 +6,13 @@ public abstract class Player {
 	protected int mNumber;
 	protected char mPawn;
 	protected int[][] mFrameValue;
+	protected Game mGame;
 	
-	Player(int pNumber, int[][] pFrameValue){ 
+	Player(int pNumber, int[][] pFrameValue, Game pGame){ 
 		mPawn = Pawns.getValue(pNumber);
 		mNumber = ++pNumber;
 		mFrameValue = pFrameValue;
+		mGame = pGame;
 	}
 
 	public int getmNumber() {
@@ -25,32 +27,22 @@ public abstract class Player {
 		return mFrameValue;
 	}
 	
-	public void setAllFrames(ArrayList<Player > pPlayers, int[] pFrame) {
-		pPlayers.forEach((current) -> current.mFrameValue[pFrame[0]][pFrame[1]] = -1);
-	}
-	
-	public void setSelfFrame(int[] pFrame, int pMax) {
-		int countdown = 1;
-		int counter = pMax *-1;
-		for(int i = 1 ; i<=pMax && i>0; i+= countdown) {
-			setFrame(pFrame[1], (pFrame[0] + counter), i);
-			setFrame((pFrame[1] + counter), pFrame[0], i);
-			setFrame((pFrame[1] + counter), (pFrame[0] + counter), i);
-			setFrame((pFrame[1] + counter*-1), (pFrame[0] + counter), i);
-			
-			if(i+1 > pMax) {
-				countdown = -1;
-			}
-			counter ++;
-		}
-	}
-	
 	public void setFrame(int x, int y, int i) {
 		if(mFrameValue.length > y && y >= 0 && mFrameValue[0].length > x && x >= 0 && mFrameValue[y][x] != -1) {
 			mFrameValue[y][x] += 5*i;
 		}
 	}
-
+	
+	public void displayFrameValue() {
+		for(int i=0; i<mFrameValue.length; i++) {
+			for(int j=0; j<mFrameValue[0].length; j++) {
+				System.out.print(mFrameValue[i][j]);
+				System.out.print("          ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
 	
 	
 }
