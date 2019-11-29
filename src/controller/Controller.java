@@ -16,7 +16,8 @@ public class Controller {
 	public void newGame(GameTypes type) {
 		switch(type) {
 		case eTicTacToe:
-			mGame = new TicTacToe(2, 3, 3, new boolean[] {false, true});
+			mGame = new TicTacToe(2, 3, 3, new boolean[] {true, true});
+			mView.createButton(3,3);
 		}
 		mValues = new int[mGame.nbValue()];
 		mPreviousPlay = new int[2];
@@ -45,7 +46,7 @@ public class Controller {
 				if(mGame.isHuman(current)) {	
 					for(int i = 0; i < mValues.length; i++) {
 						String enter = mView.getInt(Texts.values()[i].mValue); 	
-						if(!mGame.checkAnswer(enter, i)) {
+						if(!mGame.checkAnswer(enter)) {
 							mView.print(Texts.eError.mValue);
 							i--;
 						}

@@ -17,7 +17,7 @@ public class TicTacToe extends Game{
 		return 2;
 	}
 
-	public boolean checkAnswer(String pValue, int i) {
+	public boolean checkAnswer(String pValue) {
 		int value;
 		if(pValue.isEmpty()) return false;
 		try {value = Integer.parseInt(pValue);}

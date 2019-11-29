@@ -51,7 +51,7 @@ public abstract class Game {
 		return 0;
 	}
 	
-	abstract public boolean checkAnswer(String pValue, int i);
+	abstract public boolean checkAnswer(String pValue);
 	
 	public boolean playTurn(Player pCurrent, int[] pValues) {
 		return true;
