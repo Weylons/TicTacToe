@@ -5,6 +5,7 @@ public enum Texts {
 	eCol("Choisissez une ligne"),
 	eTurn("Tour du joueur"),
 	eWin("Victoire du joueur "),
+	eDraw("Match nul"),
 	eError("Valeur erroné");
 	
 	public String mValue;

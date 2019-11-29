@@ -66,9 +66,9 @@ public class Controller {
 				if(!mGame.playTurn(current, mValues)) {
 					mView.print(Texts.eError.mValue);
 				}
-				
+				else displayBoard();
 				// Si le joueur vient de gagner
-				else if(mGame.didHeWin(current)){
+				if(mGame.didHeWin(current)){
 					
 					// Fin de la boucle
 					mGame.setOver(true);
@@ -76,15 +76,22 @@ public class Controller {
 					// Affichage du joueur victorieux
 					mView.print(Texts.eWin.mValue + current.getmNumber());
 				}
+				
+				// Si c'est un match nul
+				else if(mGame.itsADraw()) {
+					mGame.setOver(true);
+					turnChecked = true;
+					mView.print(Texts.eDraw.mValue);
+				}
+				
 				// Sinon, fin de tour
 				else {
 					mPreviousPlay = mValues;
 					mGame.nextTurn();
 					turnChecked = true;
-					
 				}
 			}
-			displayBoard();
+			
 		}
 	}
 

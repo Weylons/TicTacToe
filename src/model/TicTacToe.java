@@ -1,6 +1,4 @@
 package model;
-import controller.Controller;
-
 import java.util.ArrayList;
 
 public class TicTacToe extends Game{
@@ -91,7 +89,7 @@ public class TicTacToe extends Game{
 		for(int i = 1 ; i<=mMax && i>=0; i+= countdown) {
 			pCurrent.setFrame(pFrame[1], (pFrame[0] + counter), i);
 			pCurrent.setFrame((pFrame[1] + counter), pFrame[0], i);
-			if(counter == mMax || counter == mMax*-1) coin = mMax+1;
+			if(counter == mMax || counter == mMax*-1) coin = mMax+2;
 			else coin = i;
 			pCurrent.setFrame((pFrame[1] + counter), (pFrame[0] + counter), coin);
 			pCurrent.setFrame((pFrame[1] + counter*-1), (pFrame[0] + counter), coin);

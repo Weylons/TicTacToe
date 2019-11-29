@@ -77,6 +77,12 @@ public abstract class Game {
 		return mPlayers;
 	}
 	
+	public boolean itsADraw() {
+		if(mTurn == (mBoard.getmSize()[0] * mBoard.getmSize()[1])){
+			return true;
+		}
+		return false;
+	}
 	abstract public int[][] initFrameValue();
 	
 	abstract public void setAllFrames(int[] pFrame);
