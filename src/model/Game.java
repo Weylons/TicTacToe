@@ -2,25 +2,28 @@ package model;
 
 import java.util.ArrayList;
 
+import controller.Controller;
+
 public abstract class Game {
 	protected ArrayList<Player> mPlayers;
 	protected Board mBoard;
 	private int mNbPlayer;
-	private int mTurn;
+	protected int mTurn;
 	private boolean mOver;
 	private int mMaxTurn;
 	private int mCurrentPlayer;
 	private boolean mDraw;
 	protected int mMax;
+	protected Controller mController;
 
-	protected Game(int pNbPlayer, int pSizeX, int pSizeY, boolean[] pMachines) {
+	protected Game(int pNbPlayer, int pSizeX, int pSizeY, boolean[] pMachines, Controller pController) {
 		mBoard = new Board(pSizeX, pSizeY);
 		mTurn = 1;
 		mNbPlayer = pNbPlayer;
 		mOver = false;
 		mMaxTurn = pSizeX*pSizeY;
 		mPlayers = new ArrayList<Player>();
-
+		mController = pController;
 		for(int i = 0; i < mNbPlayer; i++) {
 			if(pMachines[i]) mPlayers.add(new Machine(i, initFrameValue(), this));
 			else mPlayers.add(new Human(i, initFrameValue(), this));
@@ -53,8 +56,8 @@ public abstract class Game {
 	
 	abstract public boolean checkAnswer(String pValue);
 	
-	public boolean playTurn(Player pCurrent, int[] pValues) {
-		return true;
+	public void playTurn(Player pCurrent, int[] pValues) {
+		
 	}
 	
 	public void nextTurn() {	
@@ -78,11 +81,17 @@ public abstract class Game {
 	}
 	
 	public boolean itsADraw() {
-		if(mTurn == (mBoard.getmSize()[0] * mBoard.getmSize()[1])){
+		if(mTurn == (mBoard.getmSize()[0] * mBoard.getmSize()[1])+1){
 			return true;
 		}
 		return false;
 	}
+	
+	public int getTurn() {
+		return mTurn;
+	}
+	
+	
 	abstract public int[][] initFrameValue();
 	
 	abstract public void setAllFrames(int[] pFrame);
@@ -95,6 +104,6 @@ public abstract class Game {
 	
 	abstract public int getBest(int[][] pFrameValue);
 	
-	
+	abstract public int[] translateValue(int pValue);
 	
 }

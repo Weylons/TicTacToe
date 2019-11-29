@@ -10,7 +10,7 @@ public class Machine extends Player{
 	}	
 	
 	// Sélectionne une casen, met à jour son jeu et envoie le résultat
-	public int[] autoPlay(ArrayList<Player> pPlayers, int[] pPreviousPlay, Board pBoard, int pMax, int pSizeX, int pSizeY) {
+	public int[] autoPlay(ArrayList<Player> pPlayers, Board pBoard) {
 		char[][] grid = pBoard.getGrid();
 		int[] result = getBestFrame(pPlayers);
 		return result;

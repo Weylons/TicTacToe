@@ -1,6 +1,8 @@
 package view;
 import java.awt.GridLayout;
 import controller.Controller;
+import model.Player;
+
 import java.util.Scanner;
 
 import controller.Controller;
@@ -9,9 +11,11 @@ import controller.Controller;
 public class View {
 	Scanner mScan = new Scanner(System.in);
 	Window mWindow;
+	Controller mController;
 
-	public View() {
-		mWindow = new Window();
+	public View(Controller pController) {
+		mWindow = new Window(this);
+		mController = pController;
 	}
 	public void print(String pSentence) {
 		System.out.println(pSentence);
@@ -33,5 +37,24 @@ public class View {
 		for(int i = 1; i <= pY*pX; i++) {
 			mWindow.createButton(i);
 		}
+	}
+	
+	public void setBegin(Player pCurrent) {
+		mWindow.setCurrent(pCurrent);
+		}
+
+	public void setEnd() {
+		mWindow.repaint();
+	}
+	
+	public void sendValue(int pNum) {
+		mController.getTranslateAndPlay(pNum, mWindow.mCurrent);
+	}
+	
+	public void changeButtonValue(int[] pValues, Player pCurrent) {
+		mWindow.setCurrent(pCurrent);
+		Button button = mWindow.getButtons().get(pValues[0]*3 + pValues[1]);
+		button.setTextButton(String.valueOf(mWindow.getCurrentPawn()));
+		button.notEmpty();
 	}
 }

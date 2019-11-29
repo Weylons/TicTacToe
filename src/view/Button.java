@@ -6,19 +6,36 @@ import javax.swing.JButton;
 
 public class Button extends JButton implements MouseListener{
 	int mIndex;
+	String mTitle;
+	Window mWindow;
+	boolean mEmpty = true;
 	
-	Button(Window pWindow,int pIndex){
+	Button(Window pWindow,int pIndex, String pTitle){
+		super(pTitle);
+		mTitle = pTitle;
 		mIndex = pIndex;
 		pWindow.add(this);
+		mWindow = pWindow;
 		this.addMouseListener(this);
 	}
 
+	void setTextButton(String pText) {
+		mTitle = pText;
+		this.setText(mTitle);
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("Bouton : " + mIndex);
-	
+		if(mEmpty) {
+			notEmpty();
+			this.setTextButton(String.valueOf(mWindow.getCurrentPawn()));
+			mWindow.buttonGetClicked(mIndex);
+		}
 	}
 
+	public void notEmpty() {
+		mEmpty = false;
+	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}

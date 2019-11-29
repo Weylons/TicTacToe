@@ -1,16 +1,18 @@
 package model;
 import java.util.ArrayList;
 
+import controller.Controller;
+
 public class TicTacToe extends Game{
 
 
-	public TicTacToe(int pNbPlayer, int pSizeX, int pSizeY, boolean[] pMachines) {
-		super(pNbPlayer, pSizeX, pSizeY, pMachines);
+	public TicTacToe(int pNbPlayer, int pSizeX, int pSizeY, boolean[] pMachines, Controller pController) {
+		super(pNbPlayer, pSizeX, pSizeY, pMachines, pController);
 		mMax = 2;
 	}
 
-	public TicTacToe(){ 
-		this(2, 3, 3, new boolean[2]);
+	public TicTacToe(Controller pController){ 
+		this(2, 3, 3, new boolean[2], pController);
 	}
 
 	public int nbValue() {
@@ -26,15 +28,33 @@ public class TicTacToe extends Game{
 		return true;
 	}
 
-	public boolean playTurn(Player pCurrent, int[] pValues) {
+	public void playTurn(Player pCurrent, int[] pValues) {
 		char[][] grid = getGrid();
-		if(grid[pValues[0]][pValues[1]] != '\u0000') return false;	
-		else grid[pValues[0]][pValues[1]] = pCurrent.getPawn();
+		grid[pValues[0]][pValues[1]] = pCurrent.getPawn();
 		setAllFrames(pValues);
 		setSelfFrame(pCurrent, pValues);
-		return true;
+		mTurn++;
+		mController.endTurn(pCurrent);
+		
 	}
 
+	
+	public int[] translateValue (int pValue){
+		int[] results = new int[2];
+		int counter = 1;
+		for(int i = 0 ; i < mBoard.getmSize()[0] ; i++) {	
+			for(int j = 0; j < mBoard.getmSize()[1]; j++) {
+				if(counter == pValue) {
+					results[0] = i;
+					results[1] = j;
+				}
+				counter++;
+			}
+		}
+		return results;
+	}
+	
+	
 	public boolean didHeWin(Player pCurrent) {
 		char[][] grid = getGrid();
 		for(int i = 0; i<grid.length-mMax; i++) {

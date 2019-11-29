@@ -10,90 +10,70 @@ public class Controller {
 	int[] mPreviousPlay = new int [] {-1,-1};
 
 	public Controller(){
-		mView = new View();
+		mView = new View(this);
 	}
 
 	public void newGame(GameTypes type) {
 		switch(type) {
 		case eTicTacToe:
-			mGame = new TicTacToe(2, 3, 3, new boolean[] {true, true});
+			mGame = new TicTacToe(2, 3, 3, new boolean[] {false, true}, this);
 			mView.createButton(3,3);
 		}
 		mValues = new int[mGame.nbValue()];
 		mPreviousPlay = new int[2];
-		gameManager();
+		beginTurn();
 	}
 
 	public void newGame(GameTypes pType, int pNbPlayer, int pSizeX, int pSizeY, boolean[] pMachines) {
 		switch(pType) {
 		case eTicTacToe:
-			mGame = new TicTacToe(pNbPlayer, pSizeX, pSizeY, pMachines);
+			mGame = new TicTacToe(pNbPlayer, pSizeX, pSizeY, pMachines, this);
 		}
 	}
 
-	private void gameManager() {
-		
-		// Du moment que jeu n'est pas terminé
-		while(!mGame.ismOver()) {
-			Player current = mGame.calcTurn();
-			mView.print(Texts.eTurn.mValue + current.getmNumber());
-			boolean turnChecked = false;
-			
-			// Du moment que le tour n'est pas validé
-			while(!turnChecked){
 
-				// Est-ce que le joueur est humain ?
-				if(mGame.isHuman(current)) {	
-					for(int i = 0; i < mValues.length; i++) {
-						String enter = mView.getInt(Texts.values()[i].mValue); 	
-						if(!mGame.checkAnswer(enter)) {
-							mView.print(Texts.eError.mValue);
-							i--;
-						}
-						else {
-							mValues[i] = Integer.parseInt(enter) - 1;
-							
-						}
-					}	
-				}
-				
-				// Sinon, c'est une machine
-				else {
-					Machine automate = (Machine) current;
-					mValues = automate.autoPlay(mGame.getPlayers(), mPreviousPlay, mGame.getBoard(), mGame.getMax(), mGame.getBoard().getmSize()[0], mGame.getBoard().getmSize()[1]);	
-				}
-		
-				// Si la case sélectionnée est déjà utilisée : erreur
-				if(!mGame.playTurn(current, mValues)) {
-					mView.print(Texts.eError.mValue);
-				}
-				else displayBoard();
-				// Si le joueur vient de gagner
-				if(mGame.didHeWin(current)){
-					
-					// Fin de la boucle
-					mGame.setOver(true);
-					turnChecked = true;
-					// Affichage du joueur victorieux
-					mView.print(Texts.eWin.mValue + current.getmNumber());
-				}
-				
-				// Si c'est un match nul
-				else if(mGame.itsADraw()) {
-					mGame.setOver(true);
-					turnChecked = true;
-					mView.print(Texts.eDraw.mValue);
-				}
-				
-				// Sinon, fin de tour
-				else {
-					mPreviousPlay = mValues;
-					mGame.nextTurn();
-					turnChecked = true;
-				}
-			}
-			
+	private void beginTurn() {
+		Player current = mGame.calcTurn();
+		mView.print(Texts.eTurn.mValue + current.getmNumber());
+
+		// Est-ce que le joueur est humain ?
+		if(mGame.isHuman(current)) {
+			mView.setBegin(current);
 		}
+
+		// Sinon, c'est une machine
+		else {
+			Machine automate = (Machine) current;
+			int[] values =  automate.autoPlay(mGame.getPlayers(),mGame.getBoard());
+			mView.changeButtonValue(values, current);
+			mGame.playTurn(current, values);	
+		}
+	}
+
+	public void endTurn(Player pCurrent) {
+		mView.setEnd();
+		displayBoard();
+		// Si le joueur actuel a gagné
+		if(mGame.didHeWin(pCurrent)){
+			mGame.setOver(true);
+			// Affichage du joueur victorieux
+			mView.print(Texts.eWin.mValue + pCurrent.getmNumber());
+		}
+
+		// Si c'est un match nul
+		else if(mGame.itsADraw()) {
+			mGame.setOver(true);
+			mView.print(Texts.eDraw.mValue);
+		}
+
+		// Sinon, fin de tour
+		else {
+			beginTurn();
+		}
+	}
+
+	public void getTranslateAndPlay(int pNum, Player pCurrent) {
+		mGame.playTurn(pCurrent, mGame.translateValue(pNum));
 	}
 
 	private void displayBoard() {
@@ -106,4 +86,5 @@ public class Controller {
 			mView.print("");
 		}
 	}
+
 }

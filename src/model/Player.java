@@ -15,6 +15,7 @@ public abstract class Player {
 		mGame = pGame;
 	}
 
+	
 	public int getmNumber() {
 		return mNumber;
 	}
