@@ -13,8 +13,6 @@ public class Machine extends Player{
 	public int[] autoPlay(ArrayList<Player> pPlayers, int[] pPreviousPlay, Board pBoard, int pMax, int pSizeX, int pSizeY) {
 		char[][] grid = pBoard.getGrid();
 		int[] result = getBestFrame(pPlayers);
-		mGame.setAllFrames(pPlayers, result);
-		mGame.setSelfFrame(this, result, pMax);
 		return result;
 	}
 	

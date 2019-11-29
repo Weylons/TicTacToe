@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 
 public abstract class Game {
-	private ArrayList<Player> mPlayers;
+	protected ArrayList<Player> mPlayers;
 	protected Board mBoard;
 	private int mNbPlayer;
 	private int mTurn;
@@ -16,7 +16,7 @@ public abstract class Game {
 	protected Game(int pNbPlayer, int pSizeX, int pSizeY, boolean[] pMachines) {
 		mBoard = new Board(pSizeX, pSizeY);
 		mTurn = 1;
-		mNbPlayer = 2;
+		mNbPlayer = pNbPlayer;
 		mOver = false;
 		mMaxTurn = pSizeX*pSizeY;
 		mPlayers = new ArrayList<Player>();
@@ -79,14 +79,14 @@ public abstract class Game {
 	
 	abstract public int[][] initFrameValue();
 	
-	abstract public void setAllFrames(ArrayList<Player > pPlayers, int[] pFrame);
+	abstract public void setAllFrames(int[] pFrame);
 	
+	abstract public void setSelfFrame(Player pCurrent, int[] pFrame);
 	
-	abstract public void setSelfFrame(Player pCurrent, int[] pFrame, int pMax);
-	
-	abstract public int returnIndexOfBest(ArrayList<Integer> pValues ) ;
+	abstract public int returnIndexOfBest(ArrayList<Integer> pValues);
 	
 	abstract public int[] calcFrameValue(int[][] pFrameValue);
+	
 	abstract public int getBest(int[][] pFrameValue);
 	
 	

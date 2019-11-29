@@ -7,7 +7,7 @@ public class TicTacToe extends Game{
 
 
 	public TicTacToe(int pNbPlayer, int pSizeX, int pSizeY, boolean[] pMachines) {
-		super(2, pSizeX, pSizeY, pMachines);
+		super(pNbPlayer, pSizeX, pSizeY, pMachines);
 		mMax = 2;
 	}
 
@@ -32,6 +32,8 @@ public class TicTacToe extends Game{
 		char[][] grid = getGrid();
 		if(grid[pValues[0]][pValues[1]] != '\u0000') return false;	
 		else grid[pValues[0]][pValues[1]] = pCurrent.getPawn();
+		setAllFrames(pValues);
+		setSelfFrame(pCurrent, pValues);
 		return true;
 	}
 
@@ -77,27 +79,32 @@ public class TicTacToe extends Game{
 
 
 	// Mise à jour à chaque tour 
-	public void setAllFrames(ArrayList<Player > pPlayers, int[] pFrame) {
-		pPlayers.forEach((current) -> current.mFrameValue[pFrame[0]][pFrame[1]] = -1);
+	public void setAllFrames(int[] pFrame) {
+		mPlayers.forEach((current) -> current.mFrameValue[pFrame[0]][pFrame[1]] = -1);
 	}
 
 	// Modification des valeures personnelles après son tour
-	public void setSelfFrame(Player pCurrent, int[] pFrame, int pMax) {
+	public void setSelfFrame(Player pCurrent, int[] pFrame) {
 		int countdown = 1;
-		int counter = pMax *-1;
-		for(int i = 1 ; i<=pMax && i>0; i+= countdown) {
+		int counter = mMax *-1;
+		int coin;
+		for(int i = 1 ; i<=mMax && i>=0; i+= countdown) {
 			pCurrent.setFrame(pFrame[1], (pFrame[0] + counter), i);
 			pCurrent.setFrame((pFrame[1] + counter), pFrame[0], i);
-			pCurrent.setFrame((pFrame[1] + counter), (pFrame[0] + counter), i);
-			pCurrent.setFrame((pFrame[1] + counter*-1), (pFrame[0] + counter), i);
-
-			if(i+1 > pMax) countdown = -1;
-			counter ++;
+			if(counter == mMax || counter == mMax*-1) coin = mMax+1;
+			else coin = i;
+			pCurrent.setFrame((pFrame[1] + counter), (pFrame[0] + counter), coin);
+			pCurrent.setFrame((pFrame[1] + counter*-1), (pFrame[0] + counter), coin);
+			if(i+1 > mMax && countdown ==1) {
+				i++;
+				countdown = -1;	
+			}
+			if(++counter == 0) counter ++;
 		}
 
 		// Calcul si une case peut être gagnante
 		int calc = 1;
-		for(int i = pMax*-1; i<=pMax; i++) {
+		for(int i = mMax*-1; i<=mMax; i++) {
 			if(i!= 0 ) {
 				calcWin(pCurrent, pFrame[0], (pFrame[1] + i), pFrame[0], (pFrame[1] + i + calc));
 				calcWin(pCurrent, (pFrame[0] + i), pFrame[1], (pFrame[0] + i + calc), pFrame[1]);
@@ -120,18 +127,13 @@ public class TicTacToe extends Game{
 		char[][] grid = getGrid();
 		if(0 <= pY1 && pY1 < grid.length && 0 <= pX1 && pX1 < grid[0].length && 0 <= pY2 && pY2 < grid.length && 0 <= pX2 && pX2 < grid[0].length ) {
 			if(grid[pY1][pX1] == pPlayer.getPawn() && grid[pY2][pX2] ==  '\u0000' ) {
-				pPlayer.setFrame(pX2, pY2, 1000);
+				pPlayer.setFrame(pX2, pY2, 200);
 			}
 		}
 	}
 
-
-
-
-
+	
 	// Concernant l'IA 
-
-
 
 	// Calcule les coordonnées de la meilleure case de chaque grille de valeurs, tout joueur confondu.
 	public int[] calcFrameValue(int[][] pFrameValue) {
@@ -139,8 +141,9 @@ public class TicTacToe extends Game{
 		int[] result = new int [2];
 		for(int i = 0; i<pFrameValue.length; i++) {
 			int[] currentY = pFrameValue[i];
-			for(int j=0 ; j<pFrameValue[0].length; j++) {	
+			for(int j=0 ; j<currentY.length; j++) {	
 				if(currentY[j] > max) {
+					max = currentY[j];
 					result[0] = i;
 					result[1] = j;
 				}
@@ -155,8 +158,9 @@ public class TicTacToe extends Game{
 		int result = 0;
 		for(int i = 0; i<pFrameValue.length; i++) {
 			int[] currentY = pFrameValue[i];
-			for(int j=0 ; j<pFrameValue[0].length; j++) {	
+			for(int j=0 ; j<currentY.length; j++) {	
 				if(currentY[j] > max) {
+					max = currentY[j];
 					result = max;
 				}
 			}
@@ -170,6 +174,7 @@ public class TicTacToe extends Game{
 		int result = 0;
 		for(int i = 0; i<pValues.size(); i++) {
 			if(pValues.get(i) > max) {
+				max = pValues.get(i);
 				result = i;
 			}
 		}

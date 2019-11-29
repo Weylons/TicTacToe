@@ -35,17 +35,14 @@ public class Controller {
 		// Du moment que jeu n'est pas terminé
 		while(!mGame.ismOver()) {
 			Player current = mGame.calcTurn();
+			mView.print(Texts.eTurn.mValue + current.getmNumber());
 			boolean turnChecked = false;
 			
 			// Du moment que le tour n'est pas validé
 			while(!turnChecked){
 
 				// Est-ce que le joueur est humain ?
-				if(mGame.isHuman(current)) {
-					
-					
-					
-					
+				if(mGame.isHuman(current)) {	
 					for(int i = 0; i < mValues.length; i++) {
 						String enter = mView.getInt(Texts.values()[i].mValue); 	
 						if(!mGame.checkAnswer(enter, i)) {
@@ -53,15 +50,10 @@ public class Controller {
 							i--;
 						}
 						else {
-							
 							mValues[i] = Integer.parseInt(enter) - 1;
+							
 						}
 					}	
-					
-					
-					
-					
-					
 				}
 				
 				// Sinon, c'est une machine
@@ -91,14 +83,12 @@ public class Controller {
 					turnChecked = true;
 					
 				}
-				display(current);
-
 			}
+			displayBoard();
 		}
 	}
 
-	private void display(Player pCurrent) {
-		mView.print(Texts.eTurn.mValue + pCurrent.getmNumber());
+	private void displayBoard() {
 		char[][] grid = mGame.getGrid();
 		for(int i = 0; i < grid.length; i++) {
 			for (int j = 0 ; j<grid[i].length; j++) {
